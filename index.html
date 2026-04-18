@@ -488,55 +488,93 @@
     ];
     const precoUnitario = 0.99;
 
-   function renderTrackList() {
+  function renderTrackList() {
     const container = document.getElementById('trackListContainer');
     if (!container) return;
     container.innerHTML = '';
     
-    // Mapeamento dos links do Spotify para cada música
-    const spotifyLinks = {
-        "Under the same sun": "https://open.spotify.com/intl-pt/track/31Bj5mSYPpGGt863TP1LDs?si=7cf72db056054ae7",
-        "Am I Alone or is it a dream": "https://open.spotify.com/intl-pt/track/3CqrSGIQSdY58ktgXc85g4?si=c42639163ffc460c",
-        "Vultures in the Clouds": "https://open.spotify.com/intl-pt/track/4PxtJl1FI7VY3a9oq1yIcm?si=b6f65418052d4484",
-        "Moonlit Shadows": "https://open.spotify.com/intl-pt/track/4fjAuxBiLUGSL7mr156awG?si=9fef19a16d2441c4",
-        "Walking on the moon": "https://open.spotify.com/intl-pt/track/4SOaHsWVNsYu15t1xHsTIr?si=ada72336956146a6",
-        "Is it love": "https://open.spotify.com/intl-pt/track/1Dgdmshkb0j9PNUMK2uxQT?si=ab601057fa3c470f",
-        "Echo in the Dark": "https://open.spotify.com/intl-pt/track/2vVnCuBBLgnAqu1QjpAZUn?si=7b03d58913d74dd9",
-        "Chasing Freedom": "https://open.spotify.com/intl-pt/track/2qImLPrkp7ETP2WqIwITqZ?si=7ee215dd8e634264",
-        "Secret Garden": "https://open.spotify.com/intl-pt/track/3bgdml1R2f71I58bkzoKZF?si=0bcefb453d0a4644",
-        "Counting the Stars": "https://open.spotify.com/intl-pt/track/2d1HaraUWoeCOBSjD4h4Gi?si=ba6aac46987b444b",
-        "Pure temptation": "https://open.spotify.com/intl-pt/track/473m9OBW3tQxdBCJttJTDR?si=7d9a58cfd0a64028",
-        "Wings of freedom": "https://open.spotify.com/intl-pt/track/1bRuPS6eg9LcZ8c25rzb67?si=4c888a0c68d44ded",
-        "Blue Moon": "https://open.spotify.com/intl-pt/track/5m7nnnoT1UZBxJRhkB9R9Z?si=59e907c488854ec1",
-        "Just let me love you": "https://open.spotify.com/intl-pt/track/22VbvSXDRt4CyBhXnbggZ2?si=25c35a546da94f87"
+    // Links dos players Spotify Embed para cada música
+    // VOCÊ DEVE SUBSTITUIR OS IDs PELOS CORRETOS
+    const spotifyTrackIds = {
+        "Under the same sun": "https://open.spotify.com/track/31Bj5mSYPpGGt863TP1LDs?si=izcEd9rzSkSv2qdNrBZZFA",
+        "Am I Alone or is it a dream": "track/3CqrSGIQSdY58ktgXc85g4",
+        "Vultures in the Clouds": "track/4PxtJl1FI7VY3a9oq1yIcm",
+        "Moonlit Shadows": "track/4fjAuxBiLUGSL7mr156awG",
+        "Walking on the moon": "track/4SOaHsWVNsYu15t1xHsTIr",
+        "Is it love": "track/1Dgdmshkb0j9PNUMK2uxQT",
+        "Echo in the Dark": "track/2vVnCuBBLgnAqu1QjpAZUn",
+        "Chasing Freedom": "track/2qImLPrkp7ETP2WqIwITqZ",
+        "Secret Garden": "track/3bgdml1R2f71I58bkzoKZF",
+        "Counting the Stars": "track/2d1HaraUWoeCOBSjD4h4Gi",
+        "Pure temptation": "track/473m9OBW3tQxdBCJttJTDR",
+        "Wings of freedom": "track/1bRuPS6eg9LcZ8c25rzb67",
+        "Blue Moon": "track/5m7nnnoT1UZBxJRhkB9R9Z",
+        "Just let me love you": "track/22VbvSXDRt4CyBhXnbggZ2"
     };
 
     trackNames.forEach((track, idx) => {
+        const trackId = spotifyTrackIds[track];
         const trackDiv = document.createElement('div');
         trackDiv.className = 'track-item';
+        trackDiv.setAttribute('data-track-id', idx);
         trackDiv.innerHTML = `
             <span class="track-name">${idx+1}. ${track}</span>
             <div class="track-buttons">
                 <span class="small-price">$${precoUnitario}</span>
-                <button class="preview-btn" data-track-name="${track}"><i class="fas fa-play-circle"></i> <span class="preview-text">Preview</span></button>
-                <button class="buy-track" data-track-name="${track}"><i class="fas fa-shopping-cart"></i> <span class="buy-text">Buy</span></button>
+                <button class="preview-btn" data-track-name="${track}" data-track-id="${trackId}">
+                    <i class="fas fa-headphones"></i> <span class="preview-text">Demo</span>
+                </button>
+                <button class="buy-track" data-track-name="${track}">
+                    <i class="fas fa-shopping-cart"></i> <span class="buy-text">Buy</span>
+                </button>
+            </div>
+            <div class="spotify-embed-container" id="spotify-${idx}" style="display: none; margin-top: 15px; width: 100%;">
+                <iframe 
+                    src="https://open.spotify.com/embed/${trackId}?utm_source=generator&theme=0" 
+                    width="100%" 
+                    height="80" 
+                    frameborder="0" 
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                    loading="lazy"
+                    style="border-radius: 12px;">
+                </iframe>
             </div>
         `;
         container.appendChild(trackDiv);
     });
     
-    // PREVIEW - Abre o link do Spotify
+    // PREVIEW - Mostra/esconde o player do Spotify
     document.querySelectorAll('.preview-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const trackName = btn.getAttribute('data-track-name');
-            const link = spotifyLinks[trackName];
-            if (link) {
-                window.open(link, '_blank');
+            e.stopPropagation();
+            const trackItem = btn.closest('.track-item');
+            const embedContainer = trackItem.querySelector('.spotify-embed-container');
+            
+            // Fecha todos os outros players
+            document.querySelectorAll('.spotify-embed-container').forEach(container => {
+                if (container !== embedContainer) {
+                    container.style.display = 'none';
+                }
+            });
+            
+            // Alterna o player atual
+            if (embedContainer.style.display === 'none' || !embedContainer.style.display) {
+                embedContainer.style.display = 'block';
             } else {
-                alert(`🎧 "${trackName}" - Link não encontrado`);
+                embedContainer.style.display = 'none';
             }
         });
     });
+    
+    // BUY - Link de compra (substitua pelos seus links)
+    document.querySelectorAll('.buy-track').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const name = btn.getAttribute('data-track-name');
+            // Substitua pelo link de compra real (Apple Music, Amazon, etc.)
+            window.open('https://music.apple.com/br/artist/blind-rockets/1837790087', '_blank');
+        });
+    });
+}
     
     // BUY - Ainda em alerta (você substitui pelos links de compra depois)
     document.querySelectorAll('.buy-track').forEach(btn => {
