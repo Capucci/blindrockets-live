@@ -488,57 +488,64 @@
     ];
     const precoUnitario = 0.99;
 
-    function renderTrackList() {
-        const container = document.getElementById('trackListContainer');
-        if (!container) return;
-        container.innerHTML = '';
-        trackNames.forEach((track, idx) => {
-            const trackDiv = document.createElement('div');
-            trackDiv.className = 'track-item';
-            trackDiv.innerHTML = `
-                <span class="track-name">${idx+1}. ${track}</span>
-                <div class="track-buttons">
-                    <span class="small-price">$${precoUnitario}</span>
-                    <button class="preview-btn" data-track-name="${track}"><i class="fas fa-play-circle"></i> <span class="preview-text">Preview</span></button>
-                    <button class="buy-track" data-track-name="${track}"><i class="fas fa-shopping-cart"></i> <span class="buy-text">Buy</span></button>
-                </div>
-            `;
-            container.appendChild(trackDiv);
-        });
-        
-        // Adicionar eventos dinamicamente
-        // Mapeamento dos links do Spotify para cada música
-const spotifyLinks = {
-    "Under the same sun": "https://open.spotify.com/intl-pt/track/31Bj5mSYPpGGt863TP1LDs?si=7cf72db056054ae7",
-    "Am I Alone or is it a dream": "https://open.spotify.com/intl-pt/track/3CqrSGIQSdY58ktgXc85g4?si=c42639163ffc460c",
-    "Vultures in the Clouds": "https://open.spotify.com/intl-pt/track/4PxtJl1FI7VY3a9oq1yIcm?si=b6f65418052d4484",
-    "Moonlit Shadows": "https://open.spotify.com/intl-pt/track/4fjAuxBiLUGSL7mr156awG?si=9fef19a16d2441c4",
-    "Walking on the moon": "https://open.spotify.com/intl-pt/track/4SOaHsWVNsYu15t1xHsTIr?si=ada72336956146a6",
-    "Is it love": "https://open.spotify.com/intl-pt/track/1Dgdmshkb0j9PNUMK2uxQT?si=ab601057fa3c470f",
-    "Echo in the Dark": "https://open.spotify.com/intl-pt/track/2vVnCuBBLgnAqu1QjpAZUn?si=7b03d58913d74dd9",
-    "Chasing Freedom": "https://open.spotify.com/intl-pt/track/2qImLPrkp7ETP2WqIwITqZ?si=7ee215dd8e634264",
-    "Secret Garden": "https://open.spotify.com/intl-pt/track/3bgdml1R2f71I58bkzoKZF?si=0bcefb453d0a4644",
-    "Counting the Stars": "https://open.spotify.com/intl-pt/track/2d1HaraUWoeCOBSjD4h4Gi?si=ba6aac46987b444b",
-    "Pure temptation": "https://open.spotify.com/intl-pt/track/473m9OBW3tQxdBCJttJTDR?si=7d9a58cfd0a64028",
-    "Wings of freedom": "https://open.spotify.com/intl-pt/track/1bRuPS6eg9LcZ8c25rzb67?si=4c888a0c68d44ded",
-    "Blue Moon": "https://open.spotify.com/intl-pt/track/5m7nnnoT1UZBxJRhkB9R9Z?si=59e907c488854ec1",
-    "Just let me love you": "https://open.spotify.com/intl-pt/track/22VbvSXDRt4CyBhXnbggZ2?si=25c35a546da94f87"
-};
+   function renderTrackList() {
+    const container = document.getElementById('trackListContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    // Mapeamento dos links do Spotify para cada música
+    const spotifyLinks = {
+        "Under the same sun": "https://open.spotify.com/intl-pt/track/31Bj5mSYPpGGt863TP1LDs?si=7cf72db056054ae7",
+        "Am I Alone or is it a dream": "https://open.spotify.com/intl-pt/track/3CqrSGIQSdY58ktgXc85g4?si=c42639163ffc460c",
+        "Vultures in the Clouds": "https://open.spotify.com/intl-pt/track/4PxtJl1FI7VY3a9oq1yIcm?si=b6f65418052d4484",
+        "Moonlit Shadows": "https://open.spotify.com/intl-pt/track/4fjAuxBiLUGSL7mr156awG?si=9fef19a16d2441c4",
+        "Walking on the moon": "https://open.spotify.com/intl-pt/track/4SOaHsWVNsYu15t1xHsTIr?si=ada72336956146a6",
+        "Is it love": "https://open.spotify.com/intl-pt/track/1Dgdmshkb0j9PNUMK2uxQT?si=ab601057fa3c470f",
+        "Echo in the Dark": "https://open.spotify.com/intl-pt/track/2vVnCuBBLgnAqu1QjpAZUn?si=7b03d58913d74dd9",
+        "Chasing Freedom": "https://open.spotify.com/intl-pt/track/2qImLPrkp7ETP2WqIwITqZ?si=7ee215dd8e634264",
+        "Secret Garden": "https://open.spotify.com/intl-pt/track/3bgdml1R2f71I58bkzoKZF?si=0bcefb453d0a4644",
+        "Counting the Stars": "https://open.spotify.com/intl-pt/track/2d1HaraUWoeCOBSjD4h4Gi?si=ba6aac46987b444b",
+        "Pure temptation": "https://open.spotify.com/intl-pt/track/473m9OBW3tQxdBCJttJTDR?si=7d9a58cfd0a64028",
+        "Wings of freedom": "https://open.spotify.com/intl-pt/track/1bRuPS6eg9LcZ8c25rzb67?si=4c888a0c68d44ded",
+        "Blue Moon": "https://open.spotify.com/intl-pt/track/5m7nnnoT1UZBxJRhkB9R9Z?si=59e907c488854ec1",
+        "Just let me love you": "https://open.spotify.com/intl-pt/track/22VbvSXDRt4CyBhXnbggZ2?si=25c35a546da94f87"
+    };
 
-        document.querySelectorAll('.buy-track').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const name = btn.getAttribute('data-track-name');
-                alert(`🎸 "${name}" - $${precoUnitario} USD\n🔗 Link de pagamento: (adicione seu checkout real)\nDemo: Integre com seu sistema de vendas.`);
-            });
+    trackNames.forEach((track, idx) => {
+        const trackDiv = document.createElement('div');
+        trackDiv.className = 'track-item';
+        trackDiv.innerHTML = `
+            <span class="track-name">${idx+1}. ${track}</span>
+            <div class="track-buttons">
+                <span class="small-price">$${precoUnitario}</span>
+                <button class="preview-btn" data-track-name="${track}"><i class="fas fa-play-circle"></i> <span class="preview-text">Preview</span></button>
+                <button class="buy-track" data-track-name="${track}"><i class="fas fa-shopping-cart"></i> <span class="buy-text">Buy</span></button>
+            </div>
+        `;
+        container.appendChild(trackDiv);
+    });
+    
+    // PREVIEW - Abre o link do Spotify
+    document.querySelectorAll('.preview-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const trackName = btn.getAttribute('data-track-name');
+            const link = spotifyLinks[trackName];
+            if (link) {
+                window.open(link, '_blank');
+            } else {
+                alert(`🎧 "${trackName}" - Link não encontrado`);
+            }
         });
-        
-        document.querySelectorAll('.preview-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const trackName = btn.getAttribute('data-track-name');
-                alert(`🎧 Preview: "${trackName}"\nOuça o trecho oficial em nosso Spotify ou Apple Music!`);
-            });
+    });
+    
+    // BUY - Ainda em alerta (você substitui pelos links de compra depois)
+    document.querySelectorAll('.buy-track').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const name = btn.getAttribute('data-track-name');
+            alert(`🎸 "${name}" - $${precoUnitario} USD\n🔗 Link de compra em breve!`);
         });
-    }
+    });
+}
 
     // Membros com FOTOS
     const members = [
